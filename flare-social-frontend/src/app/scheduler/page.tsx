@@ -7,10 +7,10 @@ import Image from 'next/image';
 // Twitter profile data
 const twitterProfile = {
   id: 1,
-  name: 'Flare Test Bot',
+  name: 'Flara',
   handle: '@flaretestbot',
   avatar: 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
-  bio: 'A test bot for Flare Social',
+  bio: 'A test bot for @FlareNetworks',
   followers: '0',
   following: '0',
   joined: 'March 2025',
@@ -27,22 +27,22 @@ const twitterProfile = {
 const scheduledTweets = [
   {
     id: '1',
-    text: 'Exciting news coming next week about our Layer 1 EVM integration! Stay tuned for major #FlareNetwork developments. #Blockchain',
-    scheduledFor: 'Jun 10, 2023, 12:00 PM',
+    text: 'Exciting news coming next week about our Layer 1 EVM integration! Stay tuned for major #FlareNetwork developments. 😎',
+    scheduledFor: 'March 11, 2025, 12:05 PM',
     status: 'scheduled',
     image: null
   },
   {
     id: '2',
-    text: 'Learn about Flare\'s State Connector in our latest technical blog post. Dive into the details of how we\'re revolutionizing cross-chain communication.',
-    scheduledFor: 'Jun 12, 2023, 3:30 PM',
+    text: 'Exciting times hosting our first ever hackathon in the US with Google Cloud and Blockchain at Berkeley! 🚀👾 Dive into the details of how we\'re revolutionizing cross-chain communication. #FlareNetwork #Builders',
+    scheduledFor: 'March 12, 2025, 3:36 PM',
     status: 'scheduled',
-    image: '/placeholder-image.jpg'
+    image: '/placeholder-image.jpeg'
   },
   {
     id: '3',
-    text: 'Join us for a live AMA with our CTO next Friday! We\'ll be discussing the future of #FlareNetwork and answering all your technical questions.',
-    scheduledFor: 'Jun 15, 2023, 5:00 PM',
+    text: 'Join us for a live AMA with our CTO next Friday! We\'ll be discussing the future of #FlareNetwork and answering all your technical questions.🚀',
+    scheduledFor: 'March 15, 2025, 5:48 PM',
     status: 'scheduled',
     image: null
   }
@@ -114,7 +114,7 @@ export default function Scheduler() {
               )}
             </div>
             <p className="text-[#E1407A] mb-2">@{twitterProfile.handle.replace('@', '')}</p>
-            <p className="text-[#1E2A3B] mb-4 max-w-2xl relative animate-shine">Schedule and plan your tweets for optimal engagement</p>
+            <p className="text-[#1E2A3B] mb-4 max-w-2xl relative animate-shine">Schedule, plan, and post your tweets for optimal engagement</p>
           </div>
         </div>
 
@@ -154,7 +154,7 @@ export default function Scheduler() {
                       id="tweet-content"
                       rows={4}
                       className="input-field"
-                      placeholder="What's happening?"
+                      placeholder="What topic would you like to tweet about?"
                       value={newTweet}
                       onChange={(e) => setNewTweet(e.target.value)}
                       maxLength={280}
@@ -213,16 +213,34 @@ export default function Scheduler() {
                       <span className="text-sm text-[#71767B]">Tweets are automatically optimized for best engagement times</span>
                     </div>
                     
-                    <button
-                      type="submit"
-                      className="btn-primary flex items-center"
-                      disabled={!newTweet || !selectedDate || !selectedTime}
-                    >
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      Schedule Tweet
-                    </button>
+                    <div className="flex space-x-3">
+                      <button
+                        type="button"
+                        className="btn-primary flex items-center"
+                        disabled={!newTweet}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          alert('Tweet posted successfully!');
+                          setNewTweet('');
+                        }}
+                      >
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                        </svg>
+                        Post Tweet
+                      </button>
+                      
+                      <button
+                        type="submit"
+                        className="btn-primary flex items-center"
+                        disabled={!newTweet || !selectedDate || !selectedTime}
+                      >
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Schedule Tweet
+                      </button>
+                    </div>
                   </div>
                 </form>
               </div>

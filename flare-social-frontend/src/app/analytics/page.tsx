@@ -25,11 +25,11 @@ const twitterProfile = {
 
 // Topic analysis
 const topicAnalysis = [
-  { topic: 'Tesla', percentage: 32 },
-  { topic: 'SpaceX', percentage: 24 },
+  { topic: 'EVMs', percentage: 32 },
+  { topic: 'DeFi', percentage: 24 },
   { topic: 'AI', percentage: 18 },
-  { topic: 'Politics', percentage: 12 },
-  { topic: 'Memes', percentage: 8 },
+  { topic: 'TEEs', percentage: 12 },
+  { topic: 'Consensus Learning', percentage: 8 },
   { topic: 'Other', percentage: 6 },
 ];
 
