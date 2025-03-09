@@ -19,7 +19,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, onRefresh, isLoading = fa
             </svg>
           </div>
           <div className="font-semibold text-lg text-[#1E2A3B]">
-            Twitter Analyzer
+          Flare Social Agent
           </div>
         </div>
 
