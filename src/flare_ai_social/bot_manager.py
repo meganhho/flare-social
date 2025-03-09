@@ -45,7 +45,7 @@ class BotManager:
 
         try:
             if settings.openai_api_key:
-                logger.info("Using OpenAI model")
+                logger.info("Using Gemini 2.0 Pro model")
                 self.ai_provider = OpenAIProvider(
                     api_key=settings.openai_api_key,
                     model_name="gpt-4o",
@@ -84,7 +84,7 @@ class BotManager:
         """Initialize the default model."""
         # Choose which provider to use based on available API keys
         if settings.openai_api_key:
-            logger.info("Using OpenAI model")
+            logger.info("Using model: Gemini-2.0-Pro")
             self.ai_provider = OpenAIProvider(
                 api_key=settings.openai_api_key,
                 model_name="gpt-4o",
