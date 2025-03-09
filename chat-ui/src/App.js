@@ -9,7 +9,7 @@ function App() {
         <div className="sidebar">
           <div className="logo-container">
             <div className="logo">PH</div>
-            <h2>Pugo Hilion</h2>
+            <h2>Flara </h2>
           </div>
 
           <div className="features-container">
@@ -47,7 +47,7 @@ function App() {
           </div>
 
           <div className="sidebar-footer">
-            <p>© 2025 Pugo Hilion</p>
+            <p>© 2025 Flara</p>
           </div>
         </div>
 

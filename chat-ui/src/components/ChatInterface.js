@@ -12,7 +12,7 @@ const ChatInterface = () => {
     const [messages, setMessages] = useState([
         {
             id: 'welcome-msg',
-            text: "Hi, I'm Agent Pugo Hilion! I'm a social AI agent fine-tuned on Hugo Philion's tweets. How can I assist you today?",
+            text: "Hi, I'm Flara! I'm a social AI agent designed to be a helpful developer relations agent. How can I assist you today?",
             type: 'bot',
             timestamp: new Date(),
             status: 'delivered'
@@ -353,7 +353,7 @@ const ChatInterface = () => {
                         <span>PH</span>
                     </div>
                     <div>
-                        <h2>Agent Pugo Hilion</h2>
+                        <h2>Agent Flara </h2>
                         <div className="status-indicator">
                             <span className={`status-dot ${
                                 backendStatus === 'online' ? 'status-online' :
@@ -410,8 +410,8 @@ const ChatInterface = () => {
                 <div className="info-panel">
                     <div className="info-content">
                         <h3>About this AI</h3>
-                        <p>Agent Pugo Hilion is a social AI agent fine-tuned on Hugo Philion's tweets. It runs in a Trusted Execution Environment (TEE) for secure AI execution.</p>
-                        <p>This AI is powered by Gemini 1.5 Flash and supports markdown in its responses.</p>
+                        <p>Agent Flara is a social AI agent deisgned to be a helpful developer relations agent. It runs in a Trusted Execution Environment (TEE) for secure AI execution.</p>
+                        <p>This AI is powered by Gemini 2.0 Pro and supports markdown in its responses.</p>
                     </div>
                     <button className="close-info" onClick={() => setShowInfo(false)}>
                         <XCircle size={16} />
