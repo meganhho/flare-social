@@ -55,7 +55,7 @@ class OpenAIProvider(BaseAIProvider):
             
         self.logger = logger.bind(service="openai")
         self.logger.info(
-            "model setup", model_name=model_name, system_instruction=system_instruction
+            "model setup", model_name="gemini-2.0-pro", system_instruction=system_instruction
         )
 
     @override
