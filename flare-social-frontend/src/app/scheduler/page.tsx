@@ -9,8 +9,13 @@ const twitterProfile = {
   id: 1,
   name: 'Flara',
   handle: '@flaretestbot',
+<<<<<<< Updated upstream
   avatar: 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
   bio: 'A test bot for @FlareNetworks',
+=======
+  avatar: 'https://pbs.twimg.com/profile_images/1898673884825894912/qemdxuUW_400x400.jpg',
+  bio: 'A test bot for Flare Social',
+>>>>>>> Stashed changes
   followers: '0',
   following: '0',
   joined: 'March 2025',

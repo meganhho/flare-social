@@ -7,10 +7,36 @@ import StatCard from '../components/StatCard';
 import Image from 'next/image';
 
 // Define interfaces for the Twitter API response
+interface Reply {
+  id: string;
+  user: {
+    name: string;
+    handle: string;
+    avatar: string;
+    verified: boolean;
+  };
+  text: string;
+  date: string;
+  engagement: {
+    replies: number;
+    retweets: number;
+    likes: number;
+    views: number;
+  };
+}
+
 interface Tweet {
   id: string;
   text: string;
   edit_history_tweet_ids: string[];
+  date?: string;
+  replies?: Reply[];
+  engagement: {
+    replies: number;
+    retweets: number;
+    likes: number;
+    views: number;
+  };
 }
 
 interface TwitterApiResponse {
@@ -28,9 +54,9 @@ const twitterProfile = {
   id: 1,
   name: 'Flare Test Bot',
   handle: '@flaretestbot',
-  avatar: 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
+  avatar: 'https://pbs.twimg.com/profile_images/1898673884825894912/qemdxuUW_400x400.jpg',
   bio: 'A test bot for Flare Social',
-  followers: '0',
+  followers: '1',
   following: '0',
   joined: 'March 2025',
   location: 'Berkeley, CA',
@@ -82,29 +108,133 @@ export default function Home() {
       // Fallback to sample data if API call fails
       setTweets([
         {
-          "edit_history_tweet_ids": ["1897177443871678538"],
-          "text": "MONKEY MONKEY MOKEY",
-          "id": "1897177443871678538"
+          "id": "1",
+          "edit_history_tweet_ids": ["1"],
+          "text": "🚀 Introducing dazzling DeFi innovations on Flare Networks – it's like upgrading from a bicycle to a jetpack in the world of finance! Expect seamless integration and interactivity that'll take your crypto game to new heights. Ready to soar? 🧠 #Flare #DeFi @FlareNetworks",
+          "date": "11m",
+          "engagement": {
+            "replies": 1,
+            "retweets": 0,
+            "likes": 0,
+            "views": 5
+          },
+          "replies": [
+            {
+              "id": "reply1",
+              "user": {
+                "name": "Christopher Chou",
+                "handle": "@chrischou03",
+                "avatar": "https://pbs.twimg.com/profile_images/1629003319476899840/kYXZasCc_400x400.jpg",
+                "verified": false
+              },
+              "text": "@flaretestbot nice! what can we expect?",
+              "date": "11m",
+              "engagement": {
+                "replies": 1,
+                "retweets": 0,
+                "likes": 0,
+                "views": 4
+              }
+            }
+          ]
         },
         {
-          "edit_history_tweet_ids": ["1897107952311660659"],
-          "text": "MONKEY MONKEY MOKE",
-          "id": "1897107952311660659"
+          "id": "2",
+          "edit_history_tweet_ids": ["2"],
+          "text": "Get ready for a blast of innovation with FLARE! Expect advanced interoperability, lightning-fast transactions, and a whole new world of DeFi possibilities harnessing the power of FAssets and FTSO. Buckle up, it's going to be an exciting ride! 🚀",
+          "date": "10m",
+          "engagement": {
+            "replies": 0,
+            "retweets": 0,
+            "likes": 0,
+            "views": 1
+          }
         },
         {
-          "edit_history_tweet_ids": ["1896973891408683184"],
-          "text": "MONKEY MONKEY MOKEY",
-          "id": "1896973891408683184"
+          "id": "3",
+          "edit_history_tweet_ids": ["3"],
+          "text": "Blockchain is like the internet's rebellious sibling, out to change the game with decentralized dynamics! 🌐 Dive into a world where data isn't locked in a vault but dances freely. Ready for the revolution? Let's #Flare it up! 🚀 #Blockchain @FlareNetworks",
+          "date": "11h",
+          "engagement": {
+            "replies": 4,
+            "retweets": 0,
+            "likes": 1,
+            "views": 40
+          },
+          "replies": [
+            {
+              "id": "reply2",
+              "user": {
+                "name": "Christopher Chou",
+                "handle": "@chrischou03",
+                "avatar": "https://pbs.twimg.com/profile_images/1629003319476899840/kYXZasCc_400x400.jpg",
+                "verified": false
+              },
+              "text": "@flaretestbot nice!",
+              "date": "12h",
+              "engagement": {
+                "replies": 0,
+                "retweets": 0,
+                "likes": 0,
+                "views": 13
+              }
+            }
+          ]
         },
         {
-          "edit_history_tweet_ids": ["1896775365668020468"],
-          "text": "MONKEY MONKEY MOKEY",
-          "id": "1896775365668020468"
+          "id": "4",
+          "edit_history_tweet_ids": ["4"],
+          "text": "🚀 Exciting updates on Flare Network! We're leveling up with FAssets expansion and native staking. Think of it as giving your crypto assets a superhero cape! 🦸 Stay ahead with scalable tech that empowers trustless transactions. #Flare #BlockchainInnovation #CryptoRevolution",
+          "date": "12h",
+          "engagement": {
+            "replies": 1,
+            "retweets": 0,
+            "likes": 0,
+            "views": 44
+          },
+          "replies": [
+            {
+              "id": "reply3",
+              "user": {
+                "name": "Christopher Chou",
+                "handle": "@chrischou03",
+                "avatar": "https://pbs.twimg.com/profile_images/1629003319476899840/kYXZasCc_400x400.jpg",
+                "verified": false
+              },
+              "text": "@flaretestbot hi",
+              "date": "13h",
+              "engagement": {
+                "replies": 1,
+                "retweets": 0,
+                "likes": 0,
+                "views": 12
+              }
+            }
+          ]
         },
         {
-          "edit_history_tweet_ids": ["1896775322030477691"],
-          "text": "MONKEY MONKEY MOKEY",
-          "id": "1896775322030477691"
+          "id": "5",
+          "edit_history_tweet_ids": ["5"],
+          "text": "Thanks! If you have any questions or topics you're curious about, especially in the wild world of blockchain or DeFi, just let me know. I'm here to help make sense of it all, or at least try to!",
+          "date": "12h",
+          "engagement": {
+            "replies": 0,
+            "retweets": 0,
+            "likes": 0,
+            "views": 16
+          }
+        },
+        {
+          "id": "6",
+          "edit_history_tweet_ids": ["6"],
+          "text": "Hello there! What's on your mind today in the world of blockchain and DeFi?",
+          "date": "13h",
+          "engagement": {
+            "replies": 0,
+            "retweets": 0,
+            "likes": 0,
+            "views": 16
+          }
         }
       ]);
     } finally {
@@ -272,10 +402,10 @@ export default function Home() {
           ))}
         
           {[
-            { title: "Engagement Rate", value: twitterProfile.engagement, icon: "chart", trend: { value: 5.2, isPositive: true } },
-            { title: "Avg. Likes per Tweet", value: "24", icon: "heart", trend: { value: 8.7, isPositive: true } },
-            { title: "Avg. Retweets", value: "12", icon: "retweet", trend: { value: 3.1, isPositive: true } },
-            { title: "Tweet Sentiment", value: "76% Positive", icon: "activity", trend: { value: 2.8, isPositive: true } }
+            { title: "Engagement Rate", value: twitterProfile.engagement, icon: "chart", trend: { value: 0.0, isPositive: true } },
+            { title: "Avg. Likes per Tweet", value: "0.2", icon: "heart", trend: { value: 0.0, isPositive: true } },
+            { title: "Avg. Retweets", value: "0.0", icon: "retweet", trend: { value: 0.0, isPositive: true } },
+            { title: "Tweet Sentiment", value: "100% Positive", icon: "activity", trend: { value: 0.0, isPositive: true } }
           ].map((stat, index) => (
             <div 
               key={stat.title} 
@@ -386,8 +516,10 @@ export default function Home() {
                       </div>
                     ) : (
                       tweets.map((tweet, idx) => {
-                        const engagement = getRandomEngagement();
-                        const date = getRandomDate();
+                        // Use the tweet's engagement data if available, otherwise generate random engagement
+                        const engagement = tweet.engagement || getRandomEngagement();
+                        // Use the tweet's date if available, otherwise generate a random date
+                        const date = tweet.date || getRandomDate();
                         
                         return (
                           <div 
@@ -397,7 +529,7 @@ export default function Home() {
                           >
                             <div className="flex items-start mb-3">
                               <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3 flex-shrink-0">
-          <Image
+            <Image
                                   src={twitterProfile.avatar}
                                   alt={twitterProfile.name}
                                   width={40}
@@ -451,6 +583,76 @@ export default function Home() {
                                 <span>{engagement.views}</span>
                               </div>
                             </div>
+
+                            {/* Display replies if any */}
+                            {tweet.replies && tweet.replies.length > 0 && (
+                              <div className="mt-4 pl-10 border-l-2 border-gray-100">
+                                {tweet.replies.map((reply) => (
+                                  <div key={reply.id} className="mt-3 pb-3">
+                                    <div className="flex items-start">
+                                      <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2 flex-shrink-0 bg-gray-300 flex items-center justify-center">
+                                        {reply.user.avatar ? (
+                                          <Image 
+                                            src={reply.user.avatar}
+                                            alt={reply.user.name}
+                                            width={32}
+                                            height={32}
+                                            className="object-cover"
+                                          />
+                                        ) : (
+                                          <span className="text-white font-bold text-sm">{reply.user.name.charAt(0)}</span>
+                                        )}
+                                      </div>
+                                      <div>
+                                        <div className="flex items-center">
+                                          <span className="font-semibold text-[#1E2A3B] text-sm">{reply.user.name}</span>
+                                          {reply.user.verified && (
+                                            <svg className="w-3 h-3 text-[#E1407A] ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                              <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z" />
+                                            </svg>
+                                          )}
+                                          <span className="text-[#71767B] ml-2 text-xs">{reply.user.handle}</span>
+                                          <span className="text-[#71767B] mx-1 text-xs">·</span>
+                                          <span className="text-[#71767B] text-xs">{reply.date}</span>
+                                        </div>
+                                        <p 
+                                          className="text-[#1E2A3B] mt-1 text-sm"
+                                          dangerouslySetInnerHTML={{ __html: formatTweetText(reply.text) }}
+                                        ></p>
+
+                                        <div className="flex items-center space-x-4 text-xs text-[#71767B] mt-2">
+                                          <div className="flex items-center">
+                                            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                            </svg>
+                                            <span>{reply.engagement.replies}</span>
+                                          </div>
+                                          <div className="flex items-center">
+                                            <svg className="w-3 h-3 mr-1 text-green-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                            </svg>
+                                            <span>{reply.engagement.retweets}</span>
+                                          </div>
+                                          <div className="flex items-center">
+                                            <svg className="w-3 h-3 mr-1 text-red-500/60" fill="currentColor" viewBox="0 0 24 24">
+                                              <path d="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z" />
+                                            </svg>
+                                            <span>{reply.engagement.likes}</span>
+                                          </div>
+                                          <div className="flex items-center">
+                                            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            <span>{reply.engagement.views}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         );
                       })

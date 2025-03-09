@@ -37,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, onRefresh, isLoading = fa
               <div className="flex items-center mb-6">
                 <div className="relative w-20 h-20 rounded-full overflow-hidden mr-4 border-2 border-[#E1407A] animate-pulse-flare">
                   <Image 
-                    src="https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg" 
+                    src="https://pbs.twimg.com/profile_images/1898673884825894912/qemdxuUW_400x400.jpg" 
                     alt="Flare Test Bot" 
                     width={80}
                     height={80}
