@@ -15,7 +15,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   isLoading
 }) => {
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-[#F5F5F7] animate-fade-in">
       <Sidebar 
         activePage={activePage} 
         onRefresh={onRefresh}
@@ -23,7 +23,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       />
       
       <div className="flex-1 ml-80 p-8 overflow-auto">
-        {children}
+        <div className="max-w-7xl mx-auto">
+          {children}
+        </div>
       </div>
     </div>
   );

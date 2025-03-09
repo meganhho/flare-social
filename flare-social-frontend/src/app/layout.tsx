@@ -1,28 +1,25 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import './globals.css'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "AI Debates with Multiple Perspectives",
-  description: "Select a Twitter persona, create posts, and see auto-generated responses from various perspectives.",
-};
+  title: 'Flare Social - Twitter Analytics',
+  description: 'Analyze and optimize your Twitter performance with Flare Social',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={inter.className}>
         {children}
+        <script src="/animation.js" async defer></script>
       </body>
     </html>
-  );
+  )
 }
