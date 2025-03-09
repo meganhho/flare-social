@@ -20,7 +20,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from flare_ai_social import ChatRouter, start_bot_manager
 from flare_ai_social.ai import OpenRouterProvider
 from flare_ai_social.ai.openai import OpenAIProvider
-from flare_ai_social.prompts import FEW_SHOT_PROMPT
+from flare_ai_social.prompts import FEW_SHOT_PROMPT, FEW_SHOT_LANA_PROMPT
 from flare_ai_social.settings import settings
 
 logger = structlog.get_logger(__name__)
@@ -75,7 +75,7 @@ def create_app() -> FastAPI:
         ai=OpenAIProvider(
             api_key=settings.openai_api_key,
             model_name="gpt-4o-2024-11-20",
-            system_instruction=FEW_SHOT_PROMPT,
+            system_instruction=FEW_SHOT_LANA_PROMPT,
         )
     )
 
