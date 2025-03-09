@@ -232,24 +232,6 @@ body {
   }
 }
 
-@keyframes typewriter {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-@keyframes blinking-cursor {
-  from, to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: var(--flare-pink);
-  }
-}
-
 /* Enhanced particle keyframes with more bubble-like motion */
 @keyframes particle-float {
   0% {
@@ -281,7 +263,7 @@ body {
   }
 }
 
-/* Advanced Animation Classes */
+/* Animation Classes - Typewriter animations removed */
 .animate-gradient-bg {
   background: linear-gradient(-45deg, #E1407A, #F4B4C7, #6e57f2, #2ab4ff);
   background-size: 400% 400%;
@@ -318,15 +300,6 @@ body {
     rgba(255,255,255,0) 100%);
   background-size: 200% 100%;
   animation: shine 3s infinite;
-}
-
-.animate-typewriter {
-  overflow: hidden;
-  border-right: 0.15em solid var(--flare-pink);
-  white-space: nowrap;
-  animation: 
-    typewriter 2.5s steps(40, end) forwards,
-    blinking-cursor 0.75s step-end infinite;
 }
 
 /* More subtle 3D card effect */
