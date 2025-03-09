@@ -1,24 +1,32 @@
-import asyncio
-import calendar
-import time
-import uuid
 from dataclasses import dataclass
 from typing import Any
+import asyncio
+import hmac
+import hashlib
+import random
+import base64
+import re
+import time
+import uuid
+import calendar
+from http import HTTPStatus
+from urllib.parse import quote
 
 import aiohttp
 import structlog
 
-from flare_ai_social.ai import BaseAIProvider
+from flare_ai_social.ai.base import BaseAIProvider
+from flare_ai_social.prompts.templates import TWEET_GENERATOR_PROMPT
 
-logger = structlog.get_logger(__name__)
-
-
-HTTP_OK = 200
+# Constants
+HTTP_OK = HTTPStatus.OK
 HTTP_RATE_LIMIT = 429
 HTTP_SERVER_ERROR = 500
 ERR_TWITTER_CREDENTIALS = "Required Twitter API credentials not provided."
 ERR_RAPIDAPI_KEY = "RapidAPI key not provided. Please check your settings."
 FALLBACK_REPLY = "We're experiencing some difficulties."
+
+logger = structlog.get_logger(__name__)
 
 
 @dataclass
@@ -79,10 +87,7 @@ class TwitterBot:
 
     def _url_encode(self, value: Any) -> str:
         """Properly URL encode according to OAuth 1.0a spec (RFC 3986)"""
-        import urllib.parse
-
-        # Twitter requires RFC 3986 encoding, which is stricter than urllib's default
-        return urllib.parse.quote(str(value), safe="")
+        return quote(str(value), safe="")
 
     def _get_oauth1_auth(
         self,
@@ -91,10 +96,6 @@ class TwitterBot:
         params: dict[str, Any] | None = None,
     ) -> str:
         """Generate OAuth 1.0a authorization for Twitter API v2 requests"""
-        import base64
-        import hashlib
-        import hmac
-
         oauth_timestamp = str(int(time.time()))
         oauth_nonce = uuid.uuid4().hex
 
@@ -526,6 +527,45 @@ class TwitterBot:
                 except Exception:
                     logger.exception("Error in monitoring loop")
                     await asyncio.sleep(self.polling_interval * 2)
+
+    async def generate_startup_tweet(self, topic: str) -> str | None:
+        """
+        Generate and post a tweet when the bot starts up.
+        
+        Args:
+            topic: The topic for the tweet to be about
+            
+        Returns:
+            The tweet ID if successful, None otherwise
+        """
+        try:
+            # Generate tweet content using AI
+            prompt = TWEET_GENERATOR_PROMPT.format(topic=topic)
+            response = self.ai_provider.generate_content(prompt)
+            
+            # Extract just the tweet text (remove any potential markdown or extra formatting)
+            tweet_text = response.text.strip()
+            # Remove any markdown quote symbols if present
+            tweet_text = re.sub(r'^["\']|["\']$', '', tweet_text)
+            
+            # Check if the tweet is too long
+            if len(tweet_text) > 280:
+                tweet_text = tweet_text[:277] + "..."
+                
+            logger.info(f"Generated startup tweet: {tweet_text}")
+            
+            # Post the tweet
+            tweet_id = await self.post_tweet(tweet_text)
+            if tweet_id:
+                logger.info(f"Successfully posted startup tweet with ID: {tweet_id}")
+                return tweet_id
+            else:
+                logger.error("Failed to post startup tweet")
+                return None
+                
+        except Exception as e:
+            logger.exception(f"Error generating or posting startup tweet: {str(e)}")
+            return None
 
     def start(self) -> None:
         """Start the monitoring process"""

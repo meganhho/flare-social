@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import structlog
@@ -13,6 +14,7 @@ class Settings(BaseSettings):
 
     # API key for accessing Google's Gemini AI service
     gemini_api_key: str = ""
+    openai_api_key: str = ""
     # Name of the new tuned model
     tuned_model_name: str = ""
     # Base model to tune upon
@@ -36,6 +38,9 @@ class Settings(BaseSettings):
     x_api_key_secret: str = ""  # Required: Twitter API consumer secret
     x_access_token: str = ""  # Required: Twitter API access token
     x_access_token_secret: str = ""  # Required: Twitter API access token secret
+
+    # Tweet generation on startup
+    tweet_generation_on_startup: bool = False
 
     # RapidAPI configuration for X/Twitter search (required for the TwitterBot)
     rapidapi_key: str = ""
@@ -88,10 +93,12 @@ class Settings(BaseSettings):
 
 
 # Create a global settings instance
-settings = Settings()
+settings = Settings(
+    openai_api_key=os.environ.get("OPENAI_API_KEY"),
+)
 logger.debug(
     "settings",
     settings=settings.model_dump(
-        exclude={"x_api_key_secret", "x_access_token_secret", "telegram_api_token"}
+        exclude={"x_api_key_secret", "x_access_token_secret", "telegram_api_token", "openai_api_key"}
     ),
 )

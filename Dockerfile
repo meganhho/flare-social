@@ -34,7 +34,7 @@ COPY nginx.conf /etc/nginx/sites-enabled/default
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Allow workload operator to override environment variables
-LABEL "tee.launch_policy.allow_env_override"="GEMINI_API_KEY,TUNED_MODEL_NAME,SIMULATE_ATTESTATION"
+LABEL "tee.launch_policy.allow_env_override"="GEMINI_API_KEY,TUNED_MODEL_NAME,OPENAI_API_KEY,SIMULATE_ATTESTATION"
 LABEL "tee.launch_policy.log_redirect"="always"
 
 EXPOSE 80

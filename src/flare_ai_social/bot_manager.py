@@ -1,17 +1,23 @@
 import asyncio
 import contextlib
 import threading
+import os
+import time
+from typing import Any
 
 import google.generativeai as genai
 import structlog
 from anyio import Event
 from google.api_core.exceptions import InvalidArgument, NotFound
 
-from flare_ai_social.ai import BaseAIProvider, GeminiProvider
-from flare_ai_social.prompts import FEW_SHOT_PROMPT
+from flare_ai_social.ai.base import BaseAIProvider
+from flare_ai_social.ai.gemini import GeminiProvider
+from flare_ai_social.ai.openai import OpenAIProvider
+from flare_ai_social.ai.openrouter import OpenRouterProvider
+from flare_ai_social.prompts.templates import FEW_SHOT_PROMPT, FEW_SHOT_LANA_PROMPT
 from flare_ai_social.settings import settings
-from flare_ai_social.telegram import TelegramBot
-from flare_ai_social.twitter import TwitterBot, TwitterConfig
+from flare_ai_social.telegram.service import TelegramBot
+from flare_ai_social.twitter.service import TwitterBot, TwitterConfig
 
 logger = structlog.get_logger(__name__)
 
@@ -33,52 +39,117 @@ class BotManager:
 
     def initialize_ai_provider(self) -> None:
         """Initialize the AI provider with either tuned model or default model."""
+        # NOTE(chris): We use the openrouter provider
         genai.configure(api_key=settings.gemini_api_key)
         tuned_model_id = settings.tuned_model_name
 
         try:
-            # Check available tuned models
-            tuned_models = [m.name for m in genai.list_tuned_models()]
-            logger.info("Available tuned models", tuned_models=tuned_models)
-
-            # Try to get tuned model if it exists
-            if tuned_models and any(tuned_model_id in model for model in tuned_models):
-                try:
-                    model_info = genai.get_tuned_model(
-                        name=f"tunedModels/{tuned_model_id}"
-                    )
-                    # Initialize AI provider with tuned model
-                    self.ai_provider = GeminiProvider(
-                        settings.gemini_api_key,
-                        model_name=f"tunedModels/{tuned_model_id}",
-                    )
-                    logger.info("Tuned model info", model_info=model_info)
-                except (InvalidArgument, NotFound):
-                    logger.warning("Failed to load tuned model.")
-                    self._initialize_default_model()
-            else:
-                logger.warning(
-                    "Tuned model not found in available models. Using default model."
+            if settings.openai_api_key:
+                logger.info("Using OpenAI model")
+                self.ai_provider = OpenAIProvider(
+                    api_key=settings.openai_api_key,
+                    model_name="gpt-4o",
+                    system_instruction=FEW_SHOT_LANA_PROMPT,
                 )
-                self._initialize_default_model()
+            else:
+                # Check available tuned models
+                tuned_models = [m.name for m in genai.list_tuned_models()]
+                logger.info("Available tuned models", tuned_models=tuned_models)
+
+                # Try to get tuned model if it exists
+                if tuned_models and any(tuned_model_id in model for model in tuned_models):
+                    try:
+                        model_info = genai.get_tuned_model(
+                            name=f"tunedModels/{tuned_model_id}"
+                        )
+                        # Initialize AI provider with tuned model
+                        self.ai_provider = GeminiProvider(
+                            settings.gemini_api_key,
+                            model_name=f"tunedModels/{tuned_model_id}",
+                        )
+                        logger.info("Tuned model info", model_info=model_info)
+                    except (InvalidArgument, NotFound):
+                        logger.warning("Failed to load tuned model.")
+                        self._initialize_default_model()
+                else:
+                    logger.warning(
+                        "Tuned model not found in available models. Using default model."
+                    )
+                    self._initialize_default_model()
         except Exception:
             logger.exception("Error accessing tuned models")
             self._initialize_default_model()
 
     def _initialize_default_model(self) -> None:
-        """Initialize the default Gemini model."""
-        logger.info("Using default Gemini Flash model with few-shot prompting")
-        self.ai_provider = GeminiProvider(
-            settings.gemini_api_key,
-            model_name="gemini-1.5-flash",
-            system_instruction=FEW_SHOT_PROMPT,
-        )
+        """Initialize the default model."""
+        # Choose which provider to use based on available API keys
+        if settings.openai_api_key:
+            logger.info("Using OpenAI model")
+            self.ai_provider = OpenAIProvider(
+                api_key=settings.openai_api_key,
+                model_name="gpt-4o",
+                system_instruction=FEW_SHOT_LANA_PROMPT,
+            )
+        elif settings.openrouter_api_key:
+            logger.info("Using OpenRouter model")
+            self.ai_provider = OpenRouterProvider(
+                settings.openrouter_api_key,
+                model_name="openai/gpt-4o-2024-11-20",
+                system_instruction=FEW_SHOT_LANA_PROMPT,
+            )
+        else:
+            logger.info("Using default Gemini Flash model with few-shot prompting")
+            self.ai_provider = GeminiProvider(
+                settings.gemini_api_key,
+                model_name="gemini-1.5-flash",
+                system_instruction=FEW_SHOT_LANA_PROMPT,
+            )
 
     def _check_ai_provider_initialized(self) -> BaseAIProvider:
         """Check if AI provider is initialized and raise error if not."""
         if self.ai_provider is None:
             raise RuntimeError(ERR_AI_PROVIDER_NOT_INITIALIZED)
         return self.ai_provider
+
+    def _prompt_for_startup_tweet(self) -> str | None:
+        """
+        Prompt the user for a topic to generate a startup tweet about.
+        
+        Returns:
+            The user-provided topic or None if the user declines
+        """
+        print("\n=== Startup Tweet Generation ===")
+        print("Would you like to post a tweet when starting the bot? (y/n)")
+        response = input().strip().lower()
+        
+        if response != "y" and response != "yes":
+            print("Startup tweet declined.")
+            return None
+            
+        print("\nWhat topic would you like the tweet to be about?")
+        print("Examples: Flare Network updates, blockchain technology, DeFi innovations, etc.")
+        topic = input().strip()
+        
+        if not topic:
+            print("No topic provided. Skipping startup tweet.")
+            return None
+            
+        print(f"\nGenerating and posting a tweet about: {topic}")
+        return topic
+
+    async def _post_startup_tweet(self, twitter_bot: TwitterBot, topic: str) -> None:
+        """
+        Generate and post a startup tweet.
+        
+        Args:
+            twitter_bot: The TwitterBot instance
+            topic: The topic to tweet about
+        """
+        tweet_id = await twitter_bot.generate_startup_tweet(topic)
+        if tweet_id:
+            logger.info(f"Startup tweet posted successfully with ID: {tweet_id}")
+        else:
+            logger.warning("Failed to post startup tweet")
 
     def start_twitter_bot(self) -> bool:
         """Initialize and start the Twitter bot in a separate thread."""
@@ -119,6 +190,31 @@ class BotManager:
                 ai_provider=ai_provider,
                 config=config,
             )
+            
+            # Ask user if they want to post a startup tweet
+            if settings.tweet_generation_on_startup:
+                startup_tweet_topic = self._prompt_for_startup_tweet()
+                if startup_tweet_topic:
+                    # Create a new thread to run the async startup tweet function
+                    # This avoids the "asyncio.run() cannot be called from a running event loop" error
+                    def post_startup_tweet_thread():
+                        try:
+                            # Use a fresh event loop in this thread
+                            loop = asyncio.new_event_loop()
+                            asyncio.set_event_loop(loop)
+                            loop.run_until_complete(self._post_startup_tweet(twitter_bot, startup_tweet_topic))
+                            loop.close()
+                        except Exception as e:
+                            logger.exception(f"Error posting startup tweet: {str(e)}")
+                    
+                    # Run the async startup tweet posting in a separate thread
+                    startup_tweet_thread = threading.Thread(
+                        target=post_startup_tweet_thread,
+                        daemon=True,
+                        name="StartupTweetThread"
+                    )
+                    startup_tweet_thread.start()
+                    startup_tweet_thread.join()  # Wait for the tweet to be posted before continuing
 
             self.twitter_thread = threading.Thread(
                 target=twitter_bot.start, daemon=True, name="TwitterBotThread"
