@@ -52,30 +52,10 @@ class BotManager:
                     system_instruction=FEW_SHOT_LANA_PROMPT,
                 )
             else:
-                # Check available tuned models
-                tuned_models = [m.name for m in genai.list_tuned_models()]
-                logger.info("Available tuned models", tuned_models=tuned_models)
-
-                # Try to get tuned model if it exists
-                if tuned_models and any(tuned_model_id in model for model in tuned_models):
-                    try:
-                        model_info = genai.get_tuned_model(
-                            name=f"tunedModels/{tuned_model_id}"
-                        )
-                        # Initialize AI provider with tuned model
-                        self.ai_provider = GeminiProvider(
-                            settings.gemini_api_key,
-                            model_name=f"tunedModels/{tuned_model_id}",
-                        )
-                        logger.info("Tuned model info", model_info=model_info)
-                    except (InvalidArgument, NotFound):
-                        logger.warning("Failed to load tuned model.")
-                        self._initialize_default_model()
-                else:
-                    logger.warning(
-                        "Tuned model not found in available models. Using default model."
-                    )
-                    self._initialize_default_model()
+                self.ai_provider = GeminiProvider(
+                    settings.gemini_api_key,
+                    model_name=f"gemini-2.0-pro-exp-02-05",
+                )
         except Exception:
             logger.exception("Error accessing tuned models")
             self._initialize_default_model()

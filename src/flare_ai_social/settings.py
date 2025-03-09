@@ -93,9 +93,7 @@ class Settings(BaseSettings):
 
 
 # Create a global settings instance
-settings = Settings(
-    openai_api_key=os.environ.get("OPENAI_API_KEY"),
-)
+settings = Settings()
 logger.debug(
     "settings",
     settings=settings.model_dump(

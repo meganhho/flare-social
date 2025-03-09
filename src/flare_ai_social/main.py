@@ -18,7 +18,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from flare_ai_social import ChatRouter, start_bot_manager
-from flare_ai_social.ai import OpenRouterProvider
+from flare_ai_social.ai import GeminiProvider
 from flare_ai_social.ai.openai import OpenAIProvider
 from flare_ai_social.prompts import FEW_SHOT_PROMPT, FEW_SHOT_LANA_PROMPT
 from flare_ai_social.settings import settings
@@ -65,19 +65,19 @@ def create_app() -> FastAPI:
 
     # Initialize router with service providers
     # NOTE(chris): We use the openrouter provider
-    # chat = ChatRouter(
-    #     ai=GeminiProvider(
-    #         api_key=settings.gemini_api_key,
-    #         model_name=f"tunedModels/{settings.tuned_model_name}",
-    #     )
-    # )
     chat = ChatRouter(
-        ai=OpenAIProvider(
-            api_key=settings.openai_api_key,
-            model_name="gpt-4o-2024-11-20",
-            system_instruction=FEW_SHOT_LANA_PROMPT,
+        ai=GeminiProvider(
+            api_key=settings.gemini_api_key,
+            model_name=f"gemini-2.0-pro",
         )
     )
+    # chat = ChatRouter(
+    #     ai=OpenAIProvider(
+    #         api_key=settings.openai_api_key,
+    #         model_name="gpt-4o-2024-11-20",
+    #         system_instruction=FEW_SHOT_LANA_PROMPT,
+    #     )
+    # )
 
     # Register chat routes with API
     app.include_router(chat.router, prefix="/api/routes/chat", tags=["chat"])
