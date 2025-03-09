@@ -9,7 +9,7 @@ const twitterProfile = {
   id: 1,
   name: 'Flare Test Bot',
   handle: '@flaretestbot',
-  avatar: 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
+  avatar: 'https://pbs.twimg.com/profile_images/1898673884825894912/qemdxuUW_400x400.jpg',
   bio: 'A test bot for Flare Social',
   followers: '0',
   following: '0',
@@ -25,11 +25,11 @@ const twitterProfile = {
 
 // Topic analysis
 const topicAnalysis = [
-  { topic: 'Tesla', percentage: 32 },
-  { topic: 'SpaceX', percentage: 24 },
+  { topic: 'EVMs', percentage: 32 },
+  { topic: 'DeFi', percentage: 24 },
   { topic: 'AI', percentage: 18 },
-  { topic: 'Politics', percentage: 12 },
-  { topic: 'Memes', percentage: 8 },
+  { topic: 'TEEs', percentage: 12 },
+  { topic: 'Consensus Learning', percentage: 8 },
   { topic: 'Other', percentage: 6 },
 ];
 
