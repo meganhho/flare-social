@@ -1,0 +1,439 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --flare-pink: #E1407A;
+  --flare-pink-light: #F4B4C7;
+  --flare-dark: #1E2A3B;
+  --flare-gray: #F5F5F7;
+  --flare-text: #333333;
+  --background: #ffffff;
+  --foreground: #1E2A3B;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1E2A3B;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(225, 64, 122, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(225, 64, 122, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(225, 64, 122, 0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Animation Classes */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+.animate-pulse-flare {
+  animation: pulse 2s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.btn-primary {
+  background-color: var(--flare-pink);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(225, 64, 122, 0.25);
+}
+
+.btn-outline {
+  border: 1px solid var(--flare-pink);
+  color: var(--flare-pink);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background-color: rgba(225, 64, 122, 0.1);
+  transform: translateY(-2px);
+}
+
+.input-field {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.input-field:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(225, 64, 122, 0.5);
+  border-color: var(--flare-pink);
+}
+
+/* Toned down card hover effect */
+.card-hover-effect {
+  transition: all 0.3s ease;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 0.03), 0 2px 4px -5px rgba(0, 0, 0, 0.01);
+  border-color: rgba(225, 64, 122, 0.05);
+}
+
+.tab-transition {
+  transition: all 0.3s ease;
+}
+
+/* Loading animation */
+.loading-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--flare-pink);
+  margin: 0 4px;
+}
+
+.loading-dot:nth-child(1) {
+  animation: pulse 1s infinite alternate;
+  animation-delay: 0s;
+}
+
+.loading-dot:nth-child(2) {
+  animation: pulse 1s infinite alternate;
+  animation-delay: 0.2s;
+}
+
+.loading-dot:nth-child(3) {
+  animation: pulse 1s infinite alternate;
+  animation-delay: 0.4s;
+}
+
+/* Advanced Animation Keyframes */
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate-3d {
+  0% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(360deg);
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Enhanced particle keyframes with more bubble-like motion */
+@keyframes particle-float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(10px, -15px) rotate(4deg);
+  }
+  40% {
+    transform: translate(15px, -25px) rotate(-4deg);
+  }
+  60% {
+    transform: translate(5px, -35px) rotate(2deg);
+  }
+  80% {
+    transform: translate(-5px, -25px) rotate(-2deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Animation Classes - Typewriter animations removed */
+.animate-gradient-bg {
+  background: linear-gradient(-45deg, #E1407A, #F4B4C7, #6e57f2, #2ab4ff);
+  background-size: 400% 400%;
+  animation: gradient-flow 15s ease infinite;
+}
+
+.animate-bounce {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.animate-scale {
+  animation: scale 3s ease-in-out infinite;
+}
+
+.animate-rotate-3d {
+  animation: rotate-3d 10s linear infinite;
+}
+
+.animate-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, 
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.4) 50%,
+    rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shine 3s infinite;
+}
+
+/* More subtle 3D card effect */
+.card-3d-effect {
+  transition: all 0.3s ease;
+  transform: translateZ(0);
+}
+
+.card-3d-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px -5px rgba(0, 0, 0, 0.05),
+              0 6px 6px -5px rgba(225, 64, 122, 0.05);
+}
+
+/* Enhanced bubble-like particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(225, 64, 122, 0.3);
+  backdrop-filter: blur(1px);
+  box-shadow: 0 0 6px rgba(225, 64, 122, 0.2);
+  pointer-events: none;
+  z-index: 1;
+  transform-origin: center center;
+}
+
+/* Keep these to ensure backward compatibility */
+.particle-1, .particle-2, .particle-3, .particle-4, .particle-5 {
+  animation: particle-float 8s ease-in-out infinite;
+  background: rgba(225, 64, 122, 0.25);
+}
+
+/* Interactive 3D Cards */
+.card-3d-wrapper {
+  perspective: 1000px;
+}
+
+.card-3d-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card-3d-wrapper:hover .card-3d-inner {
+  transform: translateY(-2px);
+}
+
+/* Toned down glow effect */
+.glow-effect {
+  position: relative;
+}
+
+.glow-effect::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #E1407A, #F4B4C7, #E1407A);
+  z-index: -1;
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: inherit;
+}
+
+.glow-effect:hover::before {
+  opacity: 0.4;
+}
+
+/* Scroll Animations */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Shake effect for notifications or errors */
+@keyframes shake {
+  0%, 100% {transform: translateX(0);}
+  10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+  20%, 40%, 60%, 80% {transform: translateX(5px);}
+}
+
+.animate-shake {
+  animation: shake 0.8s ease-in-out;
+}
+
+/* Disable magnetic effect */
+.magnetic-effect {
+  transition: all 0.3s ease;
+}
+
+/* Progress bars with animated stripes */
+.progress-bar-animated {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-animated::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.2) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 25px 25px;
+  animation: move-stripes 1s linear infinite;
+  z-index: 1;
+}
+
+@keyframes move-stripes {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 25px 0;
+  }
+}
