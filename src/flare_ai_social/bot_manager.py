@@ -55,6 +55,7 @@ class BotManager:
                 self.ai_provider = GeminiProvider(
                     settings.gemini_api_key,
                     model_name=f"gemini-2.0-pro-exp-02-05",
+                    system_instruction=FEW_SHOT_LANA_PROMPT,
                 )
         except Exception:
             logger.exception("Error accessing tuned models")
